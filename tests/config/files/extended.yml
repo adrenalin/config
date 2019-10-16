@@ -1,0 +1,5 @@
+---
+test:
+  nested:
+    path:
+      value: 'overriding test value'

@@ -1,0 +1,6 @@
+---
+test:
+  nested:
+    path:
+      value: 'test value'
+  shallow: 123
