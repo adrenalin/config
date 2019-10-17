@@ -28,7 +28,7 @@ which are used when there are no overrides.
 
 ```
 db:
-  name: 'test'
+  name: 'example'
   username: 'database_admin_username'
   password: 'database_admin_password'
 ```
@@ -48,8 +48,8 @@ If `DB_CONNECTION_STRING` is present it is used fully. Otherwise a combination o
 Environment variables are used on the command line in the following manner:
 
 ```
-DB_USERNAME=test DB_PASSWORD=randompassword DB_NAME= pytest
-DB_CONNECTION_STRING=postgresql:///test alembic upgrade base
+DB_USERNAME=example DB_PASSWORD=randompassword DB_NAME=example python3 application.py
+DB_CONNECTION_STRING=postgresql:///example:password@localhost/example python3 application.py
 ```
 
 Environment variables are especially for production use, for development it is
@@ -78,7 +78,7 @@ configuration path. E.g. configuration option
 
 ```
 db:
-  connection_string: 'postgresql://postgres@localhost/test'
+  connection_string: 'postgresql://postgres@localhost/example'
 ```
 
 can be overridden with AWS SecretsManager secret key `db.connection_string`
