@@ -5,3 +5,5 @@ venv
 htmlcov
 build
 *.egg-info
+dist/
+
