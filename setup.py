@@ -21,7 +21,7 @@ packages = setuptools.find_packages(
 
 setuptools.setup(
     name='config',
-    version='0.0.2',
+    version='0.0.3',
     author='Arttu Manninen',
     author_email='arttu@kaktus.cc',
     description=description,
@@ -37,6 +37,7 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[
         'boto3>=1.9.250',
-        'botocore>=1.12.250'
+        'botocore>=1.12.250',
+        'PyYAML>=5.1.2'
     ]
 )
