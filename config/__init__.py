@@ -97,6 +97,7 @@ try to typecast the value in the beforementioned orner.
 import os
 import json
 import re
+import sys
 import yaml
 from config.boto3 import Boto3
 from config.merge import merge
@@ -105,6 +106,7 @@ boto3 = Boto3()
 
 class Config():
     """ Configuration manager """
+    Config = None
     def __init__(self):
         # Load the project configuration immediately
         self._config = {}
@@ -209,8 +211,8 @@ class Config():
             return self
 
         with open(file_path) as ymlfile:
-            config = yaml.load(ymlfile, Loader=yaml.Loader) or {}
-            self._config = merge(self._config, config)
+            values = yaml.load(ymlfile, Loader=yaml.Loader) or {}
+            self._config = merge(self._config, values)
         return self
 
     @staticmethod
@@ -248,3 +250,6 @@ class Config():
                 return default
             cfg = cfg[key]
         return cfg
+
+Config.Config = Config
+sys.modules[__name__] = Config()
