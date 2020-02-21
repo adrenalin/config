@@ -56,7 +56,7 @@ disable AWS SecretsManager when running the application:
 
 ## <a name="aws-secretsmanager"></a> 1.3 AWS SecretsManager
 
-The final layer of configurability is on2
+The final layer of configurability is on
 [AWS SecretsManager](https://eu-north-1.console.aws.amazon.com/secretsmanager/home?region=eu-north-1).
 
 ### 2.3.1 Normal values
