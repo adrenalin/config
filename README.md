@@ -1,18 +1,6 @@
-# 1 Installation and dependencies
+[![Build Status](https://travis-ci.com/adrenalin/config.svg?branch=master)](https://travis-ci.com/adrenalin/config)
 
-Install dependencies
-
-```
-virtualenv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
-```
-
-Install or configure Redis for cache engine if your system is configured to
-use Redis.
-
-
-# 2 Configuration
+# 1 Configuration
 
 There are three levels that can be used to override configuration settings:
 
@@ -20,7 +8,7 @@ There are three levels that can be used to override configuration settings:
 2. [environment variables](#environment-variables)
 3. [AWS SecretsManager](#aws-secretsmanager)
 
-## <a name="local-configuration-files"></a> 2.1 Local configuration file
+## <a name="local-configuration-files"></a> 1.1 Local configuration file
 
 It is possible to override database string in file `./config/local.yml`. Local
 configuration options override per key the ones defined in `./config/defaults.yml`
@@ -33,7 +21,7 @@ db:
   password: 'database_admin_password'
 ```
 
-## <a name="environment-variables"></a> 2.2 Environment variables
+## <a name="environment-variables"></a> 1.2 Environment variables
 
 It is possible override any default and local configuration by using environment
 variables. Environment variables follow the same naming scheme as configuration
@@ -66,9 +54,9 @@ disable AWS SecretsManager when running the application:
 
 `AWS_SECRETSMANAGER_ENABLED=false python3 application.py`
 
-## <a name="aws-secretsmanager"></a> 2.3 AWS SecretsManager
+## <a name="aws-secretsmanager"></a> 1.3 AWS SecretsManager
 
-The final layer of configurability is on
+The final layer of configurability is on2
 [AWS SecretsManager](https://eu-north-1.console.aws.amazon.com/secretsmanager/home?region=eu-north-1).
 
 ### 2.3.1 Normal values
@@ -84,7 +72,7 @@ db:
 can be overridden with AWS SecretsManager secret key `db.connection_string`
 
 
-### 2.3.2 Prefixed values
+### 1.3.2 Prefixed values
 
 Since it is expected that as the system grows there might be conflicts in the
 naming. It is possible to use prefixed strings to avoid inter application
@@ -97,3 +85,15 @@ match. Secrets without a prefix are included.
 Prefixed values have priority over values without a prefix, i.e.
 `dev@db.connection_string` is used instead of `db.connection_string` when both
 are present.
+
+### 1.3.3 Skipping unprefixed values
+
+To fetch strictly prefixed values to keep the configuration more clean, set the
+flag for `aws.secretsmanager.skip_unprefixed` to `True`
+
+```
+config.set('aws.secretsmanager.enabled', True)
+config.set('aws.secretsmanager.prefix', 'my-prefix')
+config.set('aws.secretsmanager.skip_unprefixed', True)
+config.load_secrets()
+```
