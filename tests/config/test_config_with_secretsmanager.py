@@ -214,6 +214,24 @@ class TestConfigWithSecretsManager():
 
     @staticmethod
     @mock_secretsmanager
+    def test_load_secrets_ignores_unprefixed_when_configured():
+        """ Test that load_secrets ignores everything but the prefixed when skip_unprefixed """
+        unprefixed_config_key = 'unprefixed.key'
+        unprefixed_config_value = 'unprefixed-value'
+
+        config.set('aws.secretsmanager.prefix', test_prefix)
+        config.set('aws.secretsmanager.skip_unprefixed', True)
+        client = boto3.client('secretsmanager', aws_region)
+        client.create_secret(
+            Name=unprefixed_config_key,
+            SecretString=unprefixed_config_value
+        )
+
+        config.load_secrets()
+        assert config.get(unprefixed_config_key) is None
+
+    @staticmethod
+    @mock_secretsmanager
     def test_load_secrets_loads_full_config():
         """ Test that load_secrets loads full configuration if it is available """
         prefixed_config_key = f'{test_prefix}@config'
@@ -225,5 +243,6 @@ class TestConfigWithSecretsManager():
         )
 
         config.set('aws.secretsmanager.prefix', test_prefix)
+        config.set('aws.secretsmanager.skip_unprefixed', False)
         config.load_secrets()
         assert config.get('full') == yaml_config['full']

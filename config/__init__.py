@@ -190,6 +190,9 @@ class Config():
                     continue
                 key = name[len(prefix) + 1:]
 
+            if self.get('aws.secretsmanager.skip_unprefixed'):
+                continue
+
             stored_secret = client.get_secret_value(SecretId=name)
             stored_value = self._parse_secret_value(stored_secret['SecretString'])
 
