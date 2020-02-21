@@ -1,10 +1,6 @@
 ---
 language: python
 
-services:
-  - postgresql
-  - redis
-
 python:
   - "3.7"
 
