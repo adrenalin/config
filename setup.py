@@ -38,6 +38,7 @@ setuptools.setup(
     install_requires=[
         'boto3>=1.9.250',
         'botocore>=1.12.250',
+        'moto>=1.3.8',
         'PyYAML>=5.1.2'
     ]
 )
