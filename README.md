@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/adrenalin/config.svg?branch=master)](https://travis-ci.com/adrenalin/config)
+[![Build Status](https://travis-ci.com/adrenalin/config.svg?branch=master)](https://travis-ci.com/adrenalin/config) [![Coverage Status](https://coveralls.io/repos/github/adrenalin/config/badge.svg)](https://coveralls.io/github/adrenalin/config)
 
 # 1 Configuration
 

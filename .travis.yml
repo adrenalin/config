@@ -5,7 +5,11 @@ python:
   - "3.7"
 
 install:
+  - pip3 install pytest pytest-cov coveralls
   - python3 setup.py install
 
 script:
-  - pytest tests
+  - pytest --cov=config tests
+
+after_success:
+  - coveralls
