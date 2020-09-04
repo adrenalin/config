@@ -190,7 +190,7 @@ class Config():
                     continue
                 key = name[len(prefix) + 1:]
 
-            if self.get('aws.secretsmanager.skip_unprefixed'):
+            if self.get('aws.secretsmanager.skip_unprefixed') and (name.find(prefix + '@') != 0):
                 continue
 
             stored_secret = client.get_secret_value(SecretId=name)
