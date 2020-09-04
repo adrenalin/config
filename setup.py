@@ -21,7 +21,7 @@ packages = setuptools.find_packages(
 
 setuptools.setup(
     name='config',
-    version='0.0.5',
+    version='0.0.6',
     author='Arttu Manninen',
     author_email='arttu@kaktus.cc',
     description=description,
