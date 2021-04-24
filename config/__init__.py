@@ -95,14 +95,11 @@ try to typecast the value in the beforementioned orner.
 @author Arttu Manninen <arttu@kaktus.cc>
 """
 import os
-import json
 import re
 import sys
 import yaml
-from config.boto3 import Boto3
 from config.merge import merge
-
-boto3 = Boto3()
+from config.external.aws import AWS
 
 class Config():
     """ Configuration manager """
@@ -146,63 +143,11 @@ class Config():
             **kwargs
         )
 
-    @staticmethod
-    def _parse_secret_value(value: str):
-        """ Parse secret value """
-        try:
-            return json.loads(value)
-        except json.decoder.JSONDecodeError:
-            pass
-
-        try:
-            return yaml.load(value, Loader=yaml.Loader)
-        except yaml.scanner.ScannerError:
-            return value
-
     def load_secrets(self) -> 'self':
-        """ Load AWS SecretManager secrets to the configuration """
-        if not self.get('aws.secretsmanager.enabled'):
-            return self
-
-        prefix = self.get('aws.secretsmanager.prefix', default='')
-        client = boto3.client('secretsmanager')
-        paginator = client.get_paginator('list_secrets')
-        secrets = []
-
-        for page in paginator.paginate():
-            for _i, secret_metadata in enumerate(page['SecretList']):
-                secrets.append(secret_metadata)
-
-        def sort_secrets(secret):
-            """ Sort secrets """
-            if '@' in secret['Name']:
-                return 1
-            return 0
-
-        secrets.sort(key=sort_secrets)
-
-        for secret_metadata in secrets:
-            name = secret_metadata['Name']
-            key = name
-
-            if prefix and re.search('@', key):
-                if name.find(prefix + '@') != 0:
-                    continue
-                key = name[len(prefix) + 1:]
-
-            if self.get('aws.secretsmanager.skip_unprefixed') and (name.find(prefix + '@') != 0):
-                continue
-
-            stored_secret = client.get_secret_value(SecretId=name)
-            stored_value = self._parse_secret_value(stored_secret['SecretString'])
-
-            # Special case: when the name of the secret is "config" it is handled
-            # as a full set of configuration instead of a subset
-            if key == 'config':
-                self.set(None, stored_value)
-                break
-
-            self.set(key, stored_value)
+        """ Load external secrets """
+        if self.get('aws.secretsmanager.enabled'):
+            interface = AWS()
+            interface.load(self)
 
         return self
 
