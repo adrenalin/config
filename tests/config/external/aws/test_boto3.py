@@ -4,7 +4,7 @@ Test Boto3 session interface
 @author Arttu Manninen <arttu@kaktus.cc>
 """
 import boto3
-from config.boto3 import Boto3
+from config.external.aws.boto3 import Boto3
 
 boto = Boto3()
 
