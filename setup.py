@@ -6,7 +6,8 @@ Configuration class
 import setuptools
 
 description = 'Multi tier configuration utility that leverages YAML, \
-AWS Secrets Manager and environment variables with tree structures'
+AWS Secrets Manager, Azure Key Vault and environment variables with tree \
+structures'
 
 with open('README.md', 'r') as readme:
     long_description = readme.read()
@@ -21,7 +22,7 @@ packages = setuptools.find_packages(
 
 setuptools.setup(
     name='config',
-    version='0.0.6',
+    version='0.1.0',
     author='Arttu Manninen',
     author_email='arttu@kaktus.cc',
     description=description,
@@ -39,6 +40,9 @@ setuptools.setup(
         'boto3>=1.9.250',
         'botocore>=1.12.250',
         'moto>=1.3.8',
-        'PyYAML>=5.1.2'
+        'PyYAML>=5.1.2',
+        'azure-keyvault-secrets>=1.5.0',
+        'azure-identity>=4.2.0',
+        'numpy>=1.20.2'
     ]
 )
