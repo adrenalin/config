@@ -99,7 +99,8 @@ import re
 import sys
 import yaml
 from config.merge import merge
-from config.external.aws import AWS
+from config.external.aws import SecretsManager
+from config.external.azure import KeyVault
 
 class Config():
     """ Configuration manager """
@@ -146,8 +147,12 @@ class Config():
     def load_secrets(self) -> 'self':
         """ Load external secrets """
         if self.get('aws.secretsmanager.enabled'):
-            interface = AWS()
-            interface.load(self)
+            interface = SecretsManager(self)
+            interface.load()
+
+        if self.get('azure.keyvault.enabled'):
+            interface = KeyVault(self)
+            interface.load()
 
         return self
 
