@@ -4,21 +4,15 @@ Implementation for AWS SecretsManager
 @author Arttu Manninen <arttu@kaktus.cc>
 """
 import re
-import json
-import yaml
 from config.external.aws.boto3 import Boto3
 from config.external.interface import ExternalInterface
 
 boto3 = Boto3()
 
-class AWS(ExternalInterface):
-    """ External interface """
-    def __init__(self):
-        """ Constructor """
-
-    def load(self, config):
+class SecretsManager(ExternalInterface):
+    def load(self):
         """ Load AWS SecretManager secrets to the configuration """
-        prefix = config.get('aws.secretsmanager.prefix', default='')
+        prefix = self.config.get('aws.secretsmanager.prefix', default='')
         client = boto3.client('secretsmanager')
         paginator = client.get_paginator('list_secrets')
         secrets = []
@@ -44,7 +38,8 @@ class AWS(ExternalInterface):
                     continue
                 key = name[len(prefix) + 1:]
 
-            if config.get('aws.secretsmanager.skip_unprefixed') and (name.find(prefix + '@') != 0):
+            if self.config.get('aws.secretsmanager.skip_unprefixed') and \
+                (name.find(prefix + '@') != 0):
                 continue
 
             stored_secret = client.get_secret_value(SecretId=name)
@@ -53,20 +48,7 @@ class AWS(ExternalInterface):
             # Special case: when the name of the secret is "config" it is handled
             # as a full set of configuration instead of a subset
             if key == 'config':
-                config.set(None, stored_value)
+                self.config.set(None, stored_value)
                 break
 
-            config.set(key, stored_value)
-
-    @staticmethod
-    def _parse_secret_value(value: str):
-        """ Parse secret value """
-        try:
-            return json.loads(value)
-        except json.decoder.JSONDecodeError:
-            pass
-
-        try:
-            return yaml.load(value, Loader=yaml.Loader)
-        except yaml.scanner.ScannerError:
-            return value
+            self.config.set(key, stored_value)
