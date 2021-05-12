@@ -22,7 +22,7 @@ packages = setuptools.find_packages(
 
 setuptools.setup(
     name='config',
-    version='0.1.0',
+    version='0.1.1',
     author='Arttu Manninen',
     author_email='arttu@kaktus.cc',
     description=description,
@@ -41,8 +41,8 @@ setuptools.setup(
         'botocore>=1.12.250',
         'moto>=1.3.8',
         'PyYAML>=5.1.2',
-        'azure-keyvault-secrets>=1.5.0',
-        'azure-identity>=4.2.0',
+        'azure-keyvault-secrets',
+        'azure-identity',
         'numpy>=1.20.2'
     ]
 )
